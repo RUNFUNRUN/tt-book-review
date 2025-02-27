@@ -51,7 +51,7 @@ const Login = () => {
                         placeholder='メールアドレス'
                       />
                     </FormControl>
-                    <FormMessage className='text-red-500' />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -68,7 +68,7 @@ const Login = () => {
                         placeholder='パスワード'
                       />
                     </FormControl>
-                    <FormMessage className='text-red-500' />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
