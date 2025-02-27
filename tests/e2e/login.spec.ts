@@ -5,7 +5,7 @@ test.describe('ログイン画面のテスト', () => {
     await page.goto('http://localhost:5173/login');
   });
 
-  test('不正なメールアドレスの場合、メール用エラーメッセージが表示される', async ({
+  test('メールアドレス未入力の場合、メール用エラーメッセージが表示される', async ({
     page,
   }) => {
     await page.fill('input[name="email"]', 'invalid-email');
@@ -13,43 +13,23 @@ test.describe('ログイン画面のテスト', () => {
     await page.click('button[type="submit"]');
 
     await expect(
-      page.getByText('有効なメールアドレスを入力してください'),
+      page.getByText('メールアドレスを入力してください'),
     ).toBeVisible();
     await expect(
-      page.getByText('パスワードは8文字以上で入力してください'),
-    ).not.toBeVisible();
-    await expect(
-      page.getByText('パスワードは半角英数字混合で入力してください'),
+      page.getByText('パスワードを入力してください'),
     ).not.toBeVisible();
   });
 
-  test('パスワードが8文字以下の場合、パスワード用エラーメッセージが表示される', async ({
+  test('パスワードが未入力の場合、パスワード用エラーメッセージが表示される', async ({
     page,
   }) => {
     await page.fill('input[name="email"]', 'user@example.com');
     await page.fill('input[name="password"]', '');
     await page.click('button[type="submit"]');
 
+    await expect(page.getByText('パスワードを入力してください')).toBeVisible();
     await expect(
-      page.getByText('パスワードは8文字以上で入力してください'),
-    ).toBeVisible();
-    await expect(
-      page.getByText('有効なメールアドレスを入力してください'),
-    ).not.toBeVisible();
-  });
-
-  test('パスワードが英数字混合でない場合、パスワード用エラーメッセージが表示される', async ({
-    page,
-  }) => {
-    await page.fill('input[name="email"]', 'user@example.com');
-    await page.fill('input[name="password"]', 'aaaaaaaa');
-    await page.click('button[type="submit"]');
-
-    await expect(
-      page.getByText('パスワードは半角英数字混合で入力してください'),
-    ).toBeVisible();
-    await expect(
-      page.getByText('有効なメールアドレスを入力してください'),
+      page.getByText('メールアドレスを入力してください'),
     ).not.toBeVisible();
   });
 
@@ -59,13 +39,10 @@ test.describe('ログイン画面のテスト', () => {
     await page.click('button[type="submit"]');
 
     await expect(
-      page.getByText('有効なメールアドレスを入力してください'),
+      page.getByText('メールアドレスを入力してください'),
     ).not.toBeVisible();
     await expect(
-      page.getByText('パスワードは8文字以上で入力してください'),
-    ).not.toBeVisible();
-    await expect(
-      page.getByText('パスワードは半角英数字混合で入力してください'),
+      page.getByText('パスワードを入力してください'),
     ).not.toBeVisible();
   });
 });

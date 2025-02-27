@@ -8,6 +8,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
@@ -44,12 +45,9 @@ const Login = () => {
                 name='email'
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>メールアドレス</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        className='md:text-lg'
-                        placeholder='メールアドレス'
-                      />
+                      <Input {...field} className='md:text-lg' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -60,12 +58,12 @@ const Login = () => {
                 name='password'
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>パスワード</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type='password'
                         className='md:text-lg'
-                        placeholder='パスワード'
                       />
                     </FormControl>
                     <FormMessage />
