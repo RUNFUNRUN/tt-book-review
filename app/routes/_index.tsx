@@ -1,6 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { Link, useSearchParams } from 'react-router';
+import { z } from 'zod';
 import { apiBaseUrl, getBooksSchema } from '~/api';
 import { BookCard } from '~/components/book-card';
+import { Button } from '~/components/ui/button';
 
 export const meta = () => {
   return [{ title: 'Book Review App' }];
@@ -8,11 +11,25 @@ export const meta = () => {
 
 const Index = () => {
   const token = localStorage.getItem('token');
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const rawPage = searchParams.get('page') ?? '1';
+  const parsedPage = z.coerce.number().safeParse(rawPage);
+
+  if (!parsedPage.success) {
+    setSearchParams();
+  }
+
+  const page = parsedPage.data ?? 1;
+
   const { data: books, isLoading } = useQuery({
-    queryKey: ['books'],
+    queryKey: [`books-${page}`],
     queryFn: async () => {
       if (token) {
-        const res = await fetch(new URL('/books', apiBaseUrl), {
+        const offset = (page - 1) * 10;
+        const query = new URLSearchParams();
+        query.set('offset', offset.toString());
+        const res = await fetch(new URL(`/books?${query}`, apiBaseUrl), {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -32,14 +49,37 @@ const Index = () => {
     },
   });
 
+  const prevParam = new URLSearchParams();
+  prevParam.set('page', (page - 1).toString());
+  const nextParam = new URLSearchParams();
+  nextParam.set('page', (page + 1).toString());
+
   return (
-    <div className='container mx-auto my-12'>
-      <h1 className='text-center mb-8 text-2xl font-bold'>書籍レビュー一覧</h1>
+    <div className='container mx-auto my-12 space-y-8'>
+      <h1 className='text-center text-2xl font-bold'>書籍レビュー一覧</h1>
       <div className='space-y-4'>
-        {isLoading && <p className='text-center text-xl'>Loading...</p>}
-        {books?.map((book) => (
-          <BookCard key={book.id} book={book} />
-        ))}
+        {isLoading ? (
+          <p className='text-center text-xl'>Loading...</p>
+        ) : (
+          books &&
+          (books.length === 0 ? (
+            <p className='text-center text-xl'>データがありません。</p>
+          ) : (
+            books.map((book) => <BookCard key={book.id} book={book} />)
+          ))
+        )}
+      </div>
+      <div className='flex justify-center gap-4'>
+        {books && page !== 1 && (
+          <Link to={`/?${prevParam}`} className='block'>
+            <Button>前へ</Button>
+          </Link>
+        )}
+        {books && books.length === 10 && (
+          <Link to={`/?${nextParam}`} className='block'>
+            <Button>次へ</Button>
+          </Link>
+        )}
       </div>
     </div>
   );
