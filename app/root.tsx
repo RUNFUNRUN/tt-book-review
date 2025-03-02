@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Links,
   Meta,
@@ -24,6 +25,8 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+const queryClient = new QueryClient();
+
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang='ja'>
@@ -34,10 +37,12 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Links />
       </head>
       <body>
-        {children}
-        <Toaster richColors />
-        <ScrollRestoration />
-        <Scripts />
+        <QueryClientProvider client={queryClient}>
+          {children}
+          <Toaster richColors />
+          <ScrollRestoration />
+          <Scripts />
+        </QueryClientProvider>
       </body>
     </html>
   );

@@ -11,6 +11,18 @@ export const postSigninSchema = z.object({
   token: z.string(),
 });
 
+export const bookSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  url: z.string(),
+  detail: z.string(),
+  review: z.string(),
+  reviewer: z.string(),
+  isMine: z.boolean().default(false),
+});
+
+export const getBooksSchema = z.array(bookSchema);
+
 export const postUploads = async ({
   token,
   icon,
