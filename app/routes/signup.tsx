@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import type { z } from 'zod';
-import { apiBaseUrl, postSigninSchema } from '~/api';
+import { apiBaseUrl, postUploads, postUsersSchema } from '~/api';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -21,51 +21,63 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-import { loginSchema } from '~/lib/schema';
+import { signupSchema } from '~/lib/schema';
 
 export const meta = () => {
-  return [{ title: 'ログイン | Book Review App' }];
+  return [{ title: '新規登録 | Book Review App' }];
 };
 
-const Login = () => {
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+const Signup = () => {
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
+      username: '',
       email: '',
       password: '',
+      confirmPassword: '',
+      icon: undefined,
     },
   });
   const navigate = useNavigate();
 
-  const onSubmit = async (loginForm: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (signupForm: z.infer<typeof signupSchema>) => {
     try {
-      const postUsers = await fetch(new URL('/users', apiBaseUrl), {
+      const postUsersRes = await fetch(new URL('/users', apiBaseUrl), {
         method: 'POST',
         body: JSON.stringify({
-          email: loginForm.email,
-          password: loginForm.password,
+          name: signupForm.username,
+          email: signupForm.email,
+          password: signupForm.password,
         }),
       });
-      if (postUsers.status === 409) {
+      if (postUsersRes.status === 409) {
         toast.error('既に登録されているメールアドレスです');
         return;
       }
-      if (!postUsers.ok) {
+      if (!postUsersRes.ok) {
         toast.error('エラーが発生しました。もう一度お試しください。');
         return;
       }
 
-      const parsedPostSignin = postSigninSchema.safeParse(
-        await postUsers.json(),
+      const parsedPostUsers = postUsersSchema.safeParse(
+        await postUsersRes.json(),
       );
 
-      if (parsedPostSignin.error) {
+      if (parsedPostUsers.error) {
         throw new Error();
       }
 
-      const token = parsedPostSignin.data.token;
+      const token = parsedPostUsers.data.token;
       localStorage.setItem('token', token);
 
+      if (signupForm.icon.length === 1) {
+        const icon = signupForm.icon[0];
+        const postUploadsRes = await postUploads({ token, icon });
+        if (!postUploadsRes.ok) {
+          toast.error('エラーが発生しました。もう一度お試しください。');
+          return;
+        }
+      }
       form.reset();
       navigate('/');
     } catch {
@@ -77,11 +89,24 @@ const Login = () => {
     <main className='flex flex-col min-h-dvh'>
       <Card className='sm:w-[600px] m-auto'>
         <CardHeader className='text-center'>
-          <h1 className='text-2xl font-bold'>ログイン</h1>
+          <h1 className='text-2xl font-bold'>新規登録</h1>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+              <FormField
+                control={form.control}
+                name='username'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ユーザー名</FormLabel>
+                    <FormControl>
+                      <Input {...field} className='md:text-lg' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name='email'
@@ -112,6 +137,42 @@ const Login = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name='confirmPassword'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>確認用パスワード</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type='password'
+                        className='md:text-lg'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='icon'
+                render={() => (
+                  <FormItem>
+                    <FormLabel>アイコン(任意)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='file'
+                        className='md:text-lg'
+                        accept='image/*'
+                        multiple
+                        {...form.register('icon')}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button type='submit' className='w-full'>
                 送信
               </Button>
@@ -133,4 +194,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
