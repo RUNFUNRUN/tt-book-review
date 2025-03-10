@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.2",
+    "@nanostores/react": "^0.8.4",
     "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@react-router/fs-routes": "^7.2.0",
     "@react-router/node": "^7.2.0",
@@ -28,6 +30,7 @@
     "compressorjs": "^1.2.1",
     "isbot": "^5.1.17",
     "lucide-react": "^0.476.0",
+    "nanostores": "^0.11.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",

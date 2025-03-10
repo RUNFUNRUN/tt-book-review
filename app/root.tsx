@@ -9,6 +9,7 @@ import {
 } from 'react-router';
 
 import type { Route } from './+types/root';
+import { Header } from './components/header';
 import { Toaster } from './components/ui/sonner';
 import './app.css';
 
@@ -38,6 +39,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
+          <Header />
           {children}
           <Toaster richColors />
           <ScrollRestoration />
