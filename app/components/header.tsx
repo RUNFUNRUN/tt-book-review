@@ -1,0 +1,49 @@
+import { Link, useLocation } from 'react-router';
+import { useLocalStorage } from '~/hooks/use-local-storage';
+import { cn } from '~/lib/utils';
+import { Separator } from './ui/separator';
+
+export const Header = () => {
+  const [token, setToken] = useLocalStorage('token');
+  const location = useLocation();
+  return (
+    <header>
+      <div className='m-4 flex justify-between'>
+        <div>
+          <Link to='/' className='text-2xl font-bold'>
+            Book Review App
+          </Link>
+        </div>
+        <div className='text-xl'>
+          {token ? (
+            <div>
+              <button type='button' onClick={() => setToken('')}>
+                ログアウト
+              </button>
+            </div>
+          ) : (
+            <div className='flex gap-4'>
+              <Link
+                to='/login'
+                className={cn(
+                  location.pathname === '/login' && 'font-bold underline',
+                )}
+              >
+                ログイン
+              </Link>
+              <Link
+                to='/signup'
+                className={cn(
+                  location.pathname === '/signup' && 'font-bold underline',
+                )}
+              >
+                新規登録
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+      <Separator />
+    </header>
+  );
+};

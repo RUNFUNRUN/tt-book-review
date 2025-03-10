@@ -4,13 +4,14 @@ import { z } from 'zod';
 import { apiBaseUrl, getBooksSchema } from '~/api';
 import { BookCard } from '~/components/book-card';
 import { Button } from '~/components/ui/button';
+import { useLocalStorage } from '~/hooks/use-local-storage';
 
 export const meta = () => {
   return [{ title: 'Book Review App' }];
 };
 
 const Index = () => {
-  const token = localStorage.getItem('token');
+  const [token, _setToken] = useLocalStorage('token');
 
   const [searchParams, setSearchParams] = useSearchParams();
   const rawPage = searchParams.get('page') ?? '1';
