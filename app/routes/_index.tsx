@@ -4,22 +4,17 @@ import { z } from 'zod';
 import { apiBaseUrl, getBooksSchema } from '~/api';
 import { BookCard } from '~/components/book-card';
 import { Button } from '~/components/ui/button';
+import { useUser } from '~/hooks/use-user';
 
 export const meta = () => {
   return [{ title: 'Book Review App' }];
 };
 
 const Index = () => {
-  const token = localStorage.getItem('token');
-
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { token } = useUser();
+  const [searchParams] = useSearchParams();
   const rawPage = searchParams.get('page') ?? '1';
   const parsedPage = z.coerce.number().safeParse(rawPage);
-
-  if (!parsedPage.success) {
-    setSearchParams();
-  }
-
   const page = parsedPage.data ?? 1;
 
   const { data: books, isLoading } = useQuery({

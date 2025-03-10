@@ -38,3 +38,18 @@ export const postUploads = async ({
     body: imageFormData,
   });
 };
+
+export const getUsersSchema = z.object({
+  name: z.string(),
+  iconUrl: z.string().optional(),
+});
+
+export const getUsers = async (token: string) => {
+  const responce = await fetch(new URL('/users', apiBaseUrl), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const parsed = getUsersSchema.safeParse(await responce.json());
+  return parsed.data;
+};

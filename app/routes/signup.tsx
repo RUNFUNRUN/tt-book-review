@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
@@ -21,6 +22,7 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { useUser } from '~/hooks/use-user';
 import { signupSchema } from '~/lib/schema';
 
 export const meta = () => {
@@ -28,6 +30,7 @@ export const meta = () => {
 };
 
 const Signup = () => {
+  const { data: user, setToken, isLoading } = useUser();
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -39,6 +42,12 @@ const Signup = () => {
     },
   });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate('/');
+    }
+  }, [user, isLoading, navigate]);
 
   const onSubmit = async (signupForm: z.infer<typeof signupSchema>) => {
     try {
@@ -68,7 +77,7 @@ const Signup = () => {
       }
 
       const token = parsedPostUsers.data.token;
-      localStorage.setItem('token', token);
+      setToken(token);
 
       if (signupForm.icon.length === 1) {
         const icon = signupForm.icon[0];
@@ -84,6 +93,8 @@ const Signup = () => {
       toast.error('エラーが発生しました。もう一度お試しください。');
     }
   };
+
+  const isSubmitting = form.formState.isSubmitting;
 
   return (
     <main className='flex flex-col min-h-dvh'>
@@ -173,7 +184,7 @@ const Signup = () => {
                   </FormItem>
                 )}
               />
-              <Button type='submit' className='w-full'>
+              <Button type='submit' className='w-full' disabled={isSubmitting}>
                 送信
               </Button>
             </form>

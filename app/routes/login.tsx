@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
@@ -21,6 +22,7 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { useUser } from '~/hooks/use-user';
 import { loginSchema } from '~/lib/schema';
 
 export const meta = () => {
@@ -28,6 +30,7 @@ export const meta = () => {
 };
 
 const Login = () => {
+  const { data: user, setToken, isLoading } = useUser();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -37,17 +40,27 @@ const Login = () => {
   });
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate('/');
+    }
+  }, [user, isLoading, navigate]);
+
   const onSubmit = async (loginForm: z.infer<typeof loginSchema>) => {
     try {
-      const postUsers = await fetch(new URL('/users', apiBaseUrl), {
+      const postUsers = await fetch(new URL('/signin', apiBaseUrl), {
         method: 'POST',
         body: JSON.stringify({
           email: loginForm.email,
           password: loginForm.password,
         }),
       });
-      if (postUsers.status === 409) {
-        toast.error('既に登録されているメールアドレスです');
+
+      // 認証失敗は403が返ってくる
+      if (postUsers.status === 403) {
+        toast.error(
+          'メールアドレスかパスワードが間違っています。もう一度お試しください。',
+        );
         return;
       }
       if (!postUsers.ok) {
@@ -64,7 +77,7 @@ const Login = () => {
       }
 
       const token = parsedPostSignin.data.token;
-      localStorage.setItem('token', token);
+      setToken(token);
 
       form.reset();
       navigate('/');
@@ -72,6 +85,8 @@ const Login = () => {
       toast.error('エラーが発生しました。もう一度お試しください。');
     }
   };
+
+  const isSubmitting = form.formState.isSubmitting;
 
   return (
     <main className='flex flex-col min-h-dvh'>
@@ -112,7 +127,7 @@ const Login = () => {
                   </FormItem>
                 )}
               />
-              <Button type='submit' className='w-full'>
+              <Button type='submit' className='w-full' disabled={isSubmitting}>
                 送信
               </Button>
             </form>
@@ -124,7 +139,7 @@ const Login = () => {
               to='/login'
               className='text-lg underline text-blue-600 hover:text-blue-500'
             >
-              ログインはこちら
+              新規登録はこちら
             </Link>
           </p>
         </CardFooter>
