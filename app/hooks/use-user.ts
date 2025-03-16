@@ -20,9 +20,9 @@ export const useUser = () => {
       }
 
       user.set({ isLoading: true });
-      const response = await getUsers(token);
-      if (response) {
-        user.set({ data: response, token, isLoading: false });
+      const res = await getUsers(token);
+      if (res) {
+        user.set({ data: res, token, isLoading: false });
         setToken(token);
         return;
       }
@@ -41,9 +41,9 @@ export const useUser = () => {
     }
 
     user.set({ isLoading: true });
-    const response = await getUsers(token);
-    if (response) {
-      user.set({ data: response, token, isLoading: false });
+    const res = await getUsers(token);
+    if (res) {
+      user.set({ data: res, token, isLoading: false });
       setToken(token);
       return;
     }

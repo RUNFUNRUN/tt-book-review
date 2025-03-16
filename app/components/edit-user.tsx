@@ -33,14 +33,14 @@ export const EditUser = ({
 
   const onSubmit = async (editForm: z.infer<typeof putUsersSchema>) => {
     try {
-      const response = await fetch(new URL('/users', apiBaseUrl), {
+      const res = await fetch(new URL('/users', apiBaseUrl), {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(editForm),
       });
-      if (!response.ok) {
+      if (!res.ok) {
         throw new Error();
       }
       await refetch();
