@@ -34,6 +34,13 @@ const Signup = () => {
   const { data: user, setToken, isLoading } = useUser();
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      icon: undefined,
+    },
   });
   const navigate = useNavigate();
 
