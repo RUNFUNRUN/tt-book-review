@@ -34,10 +34,6 @@ const Login = () => {
   const { data: user, setToken, isLoading } = useUser();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
   });
   const navigate = useNavigate();
 
