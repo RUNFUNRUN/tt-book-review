@@ -50,7 +50,7 @@ const Index = () => {
   nextParam.set('page', (page + 1).toString());
 
   return (
-    <div className='container mx-auto my-12 space-y-8'>
+    <main className='container mx-auto my-12 space-y-8'>
       <h1 className='text-center text-2xl font-bold'>書籍レビュー一覧</h1>
       <div className='space-y-4'>
         {isLoading ? (
@@ -76,7 +76,7 @@ const Index = () => {
           </Link>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 
