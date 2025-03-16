@@ -12,6 +12,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from '~/components/ui/card';
 import {
   Form,
@@ -92,7 +93,7 @@ const Login = () => {
     <main className='flex flex-col min-h-dvh'>
       <Card className='sm:w-[600px] m-auto'>
         <CardHeader className='text-center'>
-          <h1 className='text-2xl font-bold'>ログイン</h1>
+          <CardTitle className='text-2xl font-bold'>ログイン</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>

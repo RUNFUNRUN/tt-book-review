@@ -12,6 +12,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from '~/components/ui/card';
 import {
   Form,
@@ -100,7 +101,7 @@ const Signup = () => {
     <main className='flex flex-col min-h-dvh'>
       <Card className='sm:w-[600px] m-auto'>
         <CardHeader className='text-center'>
-          <h1 className='text-2xl font-bold'>新規登録</h1>
+          <CardTitle className='text-2xl font-bold'>新規登録</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
