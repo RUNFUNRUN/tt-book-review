@@ -20,6 +20,14 @@ export const Header = () => {
             (user ? (
               <div className='flex gap-4'>
                 <Link
+                  to='/new'
+                  className={cn(
+                    location.pathname === '/new' && 'font-bold underline',
+                  )}
+                >
+                  レビュー投稿
+                </Link>
+                <Link
                   to='/profile'
                   className={cn(
                     location.pathname === '/profile' && 'font-bold underline',

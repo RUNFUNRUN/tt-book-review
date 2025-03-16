@@ -45,18 +45,25 @@ export const getUsersSchema = z.object({
 });
 
 export const getUsers = async (token: string) => {
-  const response = await fetch(new URL('/users', apiBaseUrl), {
+  const res = await fetch(new URL('/users', apiBaseUrl), {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  if (!response.ok) {
+  if (!res.ok) {
     return;
   }
-  const parsed = getUsersSchema.safeParse(await response.json());
+  const parsed = getUsersSchema.safeParse(await res.json());
   return parsed.data;
 };
 
 export const putUsersSchema = z.object({
   name: z.string(),
+});
+
+export const postBooksSchema = z.object({
+  title: z.string(),
+  url: z.string().url(),
+  detail: z.string(),
+  review: z.string(),
 });
