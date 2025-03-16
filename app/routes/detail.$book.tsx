@@ -42,10 +42,10 @@ const BookDetail = ({ params }: Route.ComponentProps) => {
   }, [user]);
 
   useEffect(() => {
-    if (token === '') {
+    if (!isLoading && !user) {
       navigate('/login');
     }
-  }, [token, navigate]);
+  }, [isLoading, user, navigate]);
 
   if (isLoading) {
     return <div>Loading...</div>;

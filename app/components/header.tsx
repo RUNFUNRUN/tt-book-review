@@ -19,12 +19,17 @@ export const Header = () => {
           {!isLoading &&
             (user ? (
               <div className='flex gap-4'>
-                <div>{user.name}</div>
-                <div>
-                  <button type='button' onClick={logout}>
-                    ログアウト
-                  </button>
-                </div>
+                <Link
+                  to='/profile'
+                  className={cn(
+                    location.pathname === '/profile' && 'font-bold underline',
+                  )}
+                >
+                  {user.name}
+                </Link>
+                <button type='button' onClick={logout}>
+                  ログアウト
+                </button>
               </div>
             ) : (
               <div className='flex gap-4'>

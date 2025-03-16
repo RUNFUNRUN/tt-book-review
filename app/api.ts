@@ -56,3 +56,7 @@ export const getUsers = async (token: string) => {
   const parsed = getUsersSchema.safeParse(await response.json());
   return parsed.data;
 };
+
+export const putUsersSchema = z.object({
+  name: z.string(),
+});

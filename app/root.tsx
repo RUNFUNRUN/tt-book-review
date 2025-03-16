@@ -37,7 +37,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className='flex flex-col min-h-dvh'>
         <QueryClientProvider client={queryClient}>
           <Header />
           {children}

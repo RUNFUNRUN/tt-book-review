@@ -90,7 +90,7 @@ const Login = () => {
   const isSubmitting = form.formState.isSubmitting;
 
   return (
-    <main className='flex flex-col min-h-dvh'>
+    <main className='pt-20'>
       <Card className='sm:w-[600px] m-auto'>
         <CardHeader className='text-center'>
           <CardTitle className='text-2xl font-bold'>ログイン</CardTitle>
