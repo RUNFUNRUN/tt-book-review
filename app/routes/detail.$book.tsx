@@ -7,7 +7,7 @@ import type { Route } from './+types/detail.$book';
 
 const BookDetail = ({ params }: Route.ComponentProps) => {
   const id = params.book;
-  const { data: user, token } = useUser();
+  const { data: user, isLoading: isLoadingUser, token } = useUser();
   const navigate = useNavigate();
 
   const {
@@ -42,10 +42,10 @@ const BookDetail = ({ params }: Route.ComponentProps) => {
   }, [user]);
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!isLoadingUser && !user) {
       navigate('/login');
     }
-  }, [isLoading, user, navigate]);
+  }, [isLoadingUser, user, navigate]);
 
   if (isLoading) {
     return <div>Loading...</div>;
