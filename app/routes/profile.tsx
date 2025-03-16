@@ -20,7 +20,7 @@ const Profile = () => {
   return (
     <main className='pt-20'>
       {isLoading ? (
-        <p className='tex-center'>Loading...</p>
+        <p className='text-center'>Loading...</p>
       ) : (
         user &&
         token && <EditUser user={user} token={token} refetch={refetch} />
