@@ -1,9 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { apiBaseUrl, bookSchema } from '~/api';
+import { Button } from '~/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '~/components/ui/card';
 import { useUser } from '~/hooks/use-user';
 import type { Route } from './+types/detail.$book';
+
+export const meta = () => {
+  return [{ title: 'レビュー詳細 | Book Review App' }];
+};
 
 const BookDetail = ({ params }: Route.ComponentProps) => {
   const id = params.book;
@@ -47,11 +59,40 @@ const BookDetail = ({ params }: Route.ComponentProps) => {
     }
   }, [isLoadingUser, user, navigate]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  return <div>{JSON.stringify(book)}</div>;
+  return (
+    <main className='container pt-20 mx-auto'>
+      {(isLoadingUser || isLoading) && (
+        <p className='text-center'>Loading...</p>
+      )}
+      {book && (
+        <Card>
+          <CardHeader>
+            <div className='sm:flex justify-between'>
+              <CardTitle className='text-2xl'>{book.title}</CardTitle>
+              <span className='block'>
+                {book.isMine ? (
+                  <Link to={`/edit/${book.id}`}>
+                    <Button>編集</Button>
+                  </Link>
+                ) : (
+                  `レビュワー: ${book.reviewer}`
+                )}
+              </span>
+            </div>
+            <CardDescription className='text-black text-xl'>
+              <a href={book.url} className='underline block'>
+                {book.url}
+              </a>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='text-xl'>
+            <p>{book.detail}</p>
+            <p>{book.review}</p>
+          </CardContent>
+        </Card>
+      )}
+    </main>
+  );
 };
 
 export default BookDetail;
