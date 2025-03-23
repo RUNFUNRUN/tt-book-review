@@ -4,7 +4,13 @@ import { EditUser } from '~/components/edit-user';
 import { useUser } from '~/hooks/use-user';
 
 export const meta = () => {
-  return [{ title: 'ユーザー情報編集 | Book Review App' }];
+  return [
+    { title: 'ユーザー情報編集 | Book Review App' },
+    {
+      name: 'description',
+      content: 'TechTrain React.js 基礎3 書籍レビューアプリ',
+    },
+  ];
 };
 
 const Profile = () => {

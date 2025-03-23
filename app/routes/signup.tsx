@@ -27,7 +27,13 @@ import { useUser } from '~/hooks/use-user';
 import { signupSchema } from '~/lib/schema';
 
 export const meta = () => {
-  return [{ title: '新規登録 | Book Review App' }];
+  return [
+    { title: '新規登録 | Book Review App' },
+    {
+      name: 'description',
+      content: 'TechTrain React.js 基礎3 書籍レビューアプリ',
+    },
+  ];
 };
 
 const Signup = () => {

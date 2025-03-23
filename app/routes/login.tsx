@@ -27,7 +27,13 @@ import { useUser } from '~/hooks/use-user';
 import { loginSchema } from '~/lib/schema';
 
 export const meta = () => {
-  return [{ title: 'ログイン | Book Review App' }];
+  return [
+    { title: 'ログイン | Book Review App' },
+    {
+      name: 'description',
+      content: 'TechTrain React.js 基礎3 書籍レビューアプリ',
+    },
+  ];
 };
 
 const Login = () => {

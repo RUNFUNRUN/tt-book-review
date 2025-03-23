@@ -7,7 +7,13 @@ import { useUser } from '~/hooks/use-user';
 import type { Route } from './+types/edit.$book';
 
 export const meta = () => {
-  return [{ title: 'レビュー編集 | Book Review App' }];
+  return [
+    { title: 'レビュー編集 | Book Review App' },
+    {
+      name: 'description',
+      content: 'TechTrain React.js 基礎3 書籍レビューアプリ',
+    },
+  ];
 };
 
 const Edit = ({ params }: Route.ComponentProps) => {

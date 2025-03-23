@@ -20,7 +20,13 @@ import { Textarea } from '~/components/ui/textarea';
 import { useUser } from '~/hooks/use-user';
 
 export const meta = () => {
-  return [{ title: 'レビュー投稿 | Book Review App' }];
+  return [
+    { title: 'レビュー投稿 | Book Review App' },
+    {
+      name: 'description',
+      content: 'TechTrain React.js 基礎3 書籍レビューアプリ',
+    },
+  ];
 };
 
 const New = () => {

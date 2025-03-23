@@ -14,7 +14,13 @@ import { useUser } from '~/hooks/use-user';
 import type { Route } from './+types/detail.$book';
 
 export const meta = () => {
-  return [{ title: 'レビュー詳細 | Book Review App' }];
+  return [
+    { title: 'レビュー詳細 | Book Review App' },
+    {
+      name: 'description',
+      content: 'TechTrain React.js 基礎3 書籍レビューアプリ',
+    },
+  ];
 };
 
 const BookDetail = ({ params }: Route.ComponentProps) => {

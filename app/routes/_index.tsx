@@ -7,7 +7,13 @@ import { Button } from '~/components/ui/button';
 import { useUser } from '~/hooks/use-user';
 
 export const meta = () => {
-  return [{ title: 'Book Review App' }];
+  return [
+    { title: 'Book Review App' },
+    {
+      name: 'description',
+      content: 'TechTrain React.js 基礎3 書籍レビューアプリ',
+    },
+  ];
 };
 
 const Index = () => {
