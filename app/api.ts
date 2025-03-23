@@ -67,3 +67,10 @@ export const postBooksSchema = z.object({
   detail: z.string(),
   review: z.string(),
 });
+
+export const putBooksSchema = z.object({
+  title: z.string(),
+  url: z.string().url(),
+  detail: z.string(),
+  review: z.string(),
+});
