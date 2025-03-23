@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export const useLocalStorage = (key: string) => {
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string | undefined>(() => {
+    if (typeof window === 'undefined') return;
+    return localStorage.getItem(key) ?? '';
+  });
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem(key);
-      if (stored !== null) {
-        setValue(stored);
-      }
+    if (typeof window === 'undefined') return;
+    const stored = localStorage.getItem(key);
+    if (stored !== null) {
+      setValue(stored);
     }
   }, [key]);
 
